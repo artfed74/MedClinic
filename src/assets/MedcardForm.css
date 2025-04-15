@@ -1,0 +1,116 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.registration {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid #2C9EAE;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 600px;
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+label {
+    margin-top: 10px;
+    display: block;
+    color: #333;
+}
+
+input,select{
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    transition: border 0.3s ease;
+}
+
+input:focus {
+    border-color:#2C9EAE;
+    outline: none;
+}
+select:focus {
+    border-color:#2C9EAE;
+    outline: none;
+}
+textarea:focus {
+    border-color:#2C9EAE;
+    outline: none;
+}
+.error-input{
+    border: 1px solid red;
+}
+
+
+
+.error-span {
+    color: red;
+    font-size: 12px;
+}
+
+.base-button {
+    background-color: white;
+    color: white;
+    border: 1px solid #2C9EAE;; /* Красная граница */
+    border-radius: 5px;
+    margin-top: 15px;
+    color: #2C9EAE;
+    padding: 10px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.base-button:hover {
+    background-color: #2C9EAE;
+    color: white;
+}
+
+.reg-btn {
+    color: #2C9EAE;
+    text-decoration: none;
+}
+
+.reg-btn:hover {
+    text-decoration: underline;
+}
+.error-span{
+    border-radius: 6px;
+    padding: 5px;
+    font-size: 17px;
+    color:red;
+
+}
+.error-input{
+    border: 1px solid red;
+}
+.error-message{
+    color: red;
+    text-align: center;
+}
+textarea {
+    width: 100%;
+    padding: 10px;
+    height: 224px;
+    font-size: 16px;
+    color: #3C3C3C;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    transition: border 0.3s ease;
+    outline: none; /* Убираем обводку при фокусе */
+}
+
+textarea:focus {
+        border-color:#2C9EAE;
+        outline: none;
+    }
