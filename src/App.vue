@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <header class="header">
+    <header class="header" v-if="!$route.meta.hideHeader">
       <div class="logo">
         <img :src="med" alt="Логотип" class="logo-img" />
         <RouterLink to="/" class="logo-link">Ваше здоровье</RouterLink>
@@ -11,6 +11,7 @@
           <li><a v-if="!token" href="/login" @click="clearError">Авторизация</a></li>
           <li><a href="/doctors">Врачи</a></li>
           <li><a href="/rooms">Кабинеты клиники</a></li>
+          <li><a v-if="token && role === 'Администратор'" :href="`/statistics`">Статистика</a></li>
           <li><a v-if="token && role === 'Пациент'" :href="`/profile/${patient_id}`">Кабинет пациента</a></li>
           <li><a v-if="token && role === 'Врач'" :href="`/doctors/${doctor_id}`">Кабинет врача</a></li>
           <li v-if="token">

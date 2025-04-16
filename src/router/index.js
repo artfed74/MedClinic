@@ -25,6 +25,8 @@ import TestStar from '@/components/TestStar.vue'
 import AccessDenied from '@/components/AccessDenied.vue'
 import NotFound from '@/components/NotFound.vue'
 import PatientNotifications from '@/components/PatientNotifications.vue'
+import StatisticIndex from '@/components/StatisticIndex.vue'
+import StatisticsDoctor from '@/components/StatisticsDoctor.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -156,7 +158,19 @@ const router = createRouter({
       component: AccessDenied,
     },
     {
-      path: '/:pathMatch(.*)*', 
+      path: '/statistics',
+      name: 'Statistics',
+      component:StatisticIndex,
+      meta: { hideHeader: true }
+    },
+    {
+      path: '/statistics/doctors',
+      name: 'Statisticsdoctor',
+      component:StatisticsDoctor,
+      meta: { hideHeader: true }
+    },
+    {
+      path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: NotFound,
     },
@@ -175,7 +189,7 @@ router.beforeEach((to, from, next) => {
 
   const protectedRoutes = ['/appointments/create', '/reviews/create'];
 
-  const adminRoutes = ['/rooms/create', '/doctors/create', '/doctors/schedules/create','/doctors/schedules/edit'];
+  const adminRoutes = ['/rooms/create', '/doctors/create', '/doctors/schedules/create','/doctors/schedules/edit','/statistics'];
 
   const adminRoutesWithParams = adminRoutes.map(route => {
     return new RegExp(`^${route.replace(':id', '\\d+')}`);

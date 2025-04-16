@@ -22,6 +22,7 @@ const reviews = ref([]); // Список отзывов
 const spec = ref([]); // Список врачей
 const isModalOpen = ref(false); // Состояние модального окна
 const currentReview = ref(null); // Текущий выбранный отзыв
+import StarRating from 'vue-star-rating'; // Импортируем библиотеку
 
 // Функция для открытия модального окна
 const openModal = (review) => {
@@ -250,7 +251,7 @@ onMounted(fetchSpec);
         </div>
         <div class="review__text">{{ currentReview?.text }}</div>
         <div class="review__footer">
-          <div class="review__author">Оценка: {{currentReview?.estimation}}</div>
+          <star-rating :rating="currentReview?.estimation" :star-size="30" :show-rating="false" :read-only="true"></star-rating>
           <div class="review__date">{{ formatDate(currentReview?.review_datetime) }}</div>
         </div>
       </div>

@@ -1,0 +1,139 @@
+.select-wrapper {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.period-select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    background-color: white;
+    transition: border 0.2s;
+}
+
+.period-select:focus {
+    border-color: #035a6b;
+    outline: none;
+}
+.text{
+    font-size: 24px;
+    font-weight: 300;
+}
+.person-card-2__text{
+    color: #035a6b;
+    font-size: 45px;
+    margin-top: 40px;
+}
+.stats-page {
+    display: flex;
+    min-height: 100vh;
+    font-family: sans-serif;
+}
+
+/* Сайдбар */
+.sidebar {
+    width: 220px;
+    background-color: #035a6b;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    animation: slideIn 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+/* Анимация появления */
+@keyframes slideIn {
+    from {
+        transform: translateX(-50%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+@keyframes fadeDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animated-card {
+    animation: fadeDown 0.6s ease-out forwards;
+    opacity: 0;
+}
+.menu-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.menu-list {
+    list-style: none;
+    padding-left: 30%;
+}
+.menu-item {
+    margin-bottom: 20px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.menu-item:hover {
+    transform: scale(1.05);
+}
+.menu-item img {
+    width: 100%;
+    max-width: 150px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.menu-item:hover img {
+    transform: scale(1.1);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+.menu-list li {
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+/* Контент */
+.content {
+    flex: 1;
+    padding: 30px;
+    padding-top: 10px;
+    background-color: #f6f9fa;
+
+}
+
+.button-container {
+    margin-top: 30px;
+    display: flex;
+}
+.personal-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 35px;
+}
+.person-card-2 {
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    height: 120px;
+    padding: 32px 46px 68px 42px;
+    border: 1px solid #9cc1c9;
+    border-radius: 10px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+}

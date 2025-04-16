@@ -19,14 +19,19 @@
 
     <div>
       <label for="appointmentDate">Выберите дату:</label>
-      <input
-        type="date"
+      <Flatpickr
         v-model="appointmentDate"
-        required
+        :config="{
+    locale: Russian,
+    dateFormat: 'd-m-Y',
+    minDate: 'today',
+    enable: enabledDates
+  }"
+        class="custom-date-input"
       />
     </div>
 
-    <div v-if="availableTimes.length">
+    <div v-if="appointmentDate && availableTimes.length">
       <label for="appointmentTime">Выберите свободное время:</label>
       <select v-model="selectedTime" required>
         <option v-for="time in availableTimes" :key="time" :value="time">{{ time }}</option>
@@ -45,7 +50,21 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue'
+import Flatpickr from 'vue-flatpickr-component'
+import 'flatpickr/dist/flatpickr.min.css'
+import { Russian } from 'flatpickr/dist/l10n/ru.js'
+const enabledDates = ref([]);
+const convertDateToYMD = (dateStr) => {
+  const [day, month, year] = dateStr.split('-')
+  return `${year}-${month}-${day}`
+}
+const config = {
+  locale: Russian,
+  dateFormat: "d-m-Y",
+  minDate: 'today',
+  enable: enabledDates.value
 
+}
 const service = ref({});
 const appointmentDate = ref('');
 const selectedTime = ref('');
@@ -62,7 +81,38 @@ watch(appointmentDate, async (newDate) => {
     await fetchAvailableTimes(newDate);
   }
 });
+const datepickerKey = ref(0);
+
+const fetchAvailableDates = async () => {
+  try {
+    const response = await fetch(`http://api-medical/api/available-dates?service_id=${serviceId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (!response.ok) throw new Error('Ошибка при получении доступных дат');
+    const data = await response.json();
+
+    console.log("🟢 Даты с сервера:", data.available_dates); // <-- тут глянем
+
+    enabledDates.value = data.available_dates.map(date => new Date(date));
+    config.enable = enabledDates.value;
+    console.log("🔵 Передаем в flatpickr:", config.enable); // <-- и тут
+    console.log("🟢 Сырые даты:", data.available_dates);
+    console.log("🔵 Конвертированные:", enabledDates.value);
+    // Перезапуск компонента (если нужно)
+    datepickerKey.value++;
+  } catch (error) {
+    console.error(error);
+  }
+};
 const fetchAvailableTimes = async (date) => {
+  watch(appointmentDate, async (newDate) => {
+    if (newDate) {
+      const formattedDate = convertDateToYMD(newDate);
+      await fetchAvailableTimes(formattedDate);
+    }
+  });
   availableTimes.value = [];
   availabilityError.value = '';
 
@@ -122,8 +172,8 @@ const submitAppointment = async (event) => {
   errorMessages.value = [];
   availabilityError.value = '';
 
-  // Комбинируем дату и время
-  const appointmentDateTime = `${appointmentDate.value}T${selectedTime.value}`;
+  const formattedDate = convertDateToYMD(appointmentDate.value);
+  const appointmentDateTime = `${formattedDate}T${selectedTime.value}`;
 
   try {
     const response = await fetch('http://api-medical/api/appointments', {
@@ -157,8 +207,10 @@ const submitAppointment = async (event) => {
   }
 };
 
-onMounted(fetchServiceDetails);
-</script>
+onMounted(() => {
+  fetchServiceDetails();
+  fetchAvailableDates();
+});</script>
 
 <style scoped>
 @import "../assets/login.css";
@@ -179,5 +231,74 @@ p {
 }
 span {
   color: red;
+}
+
+input[type="date"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #2C9EAE;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #333;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+
+input[type="date"]:focus,
+select:focus {
+  border-color: #035a6b;
+  outline: none;
+  box-shadow: 0 0 5px rgba(44, 158, 174, 0.5);
+}
+.custom-date-input {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 16px;
+  border: 1px solid #2C9EAE;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.custom-date-input:focus {
+  outline: none;
+  border-color: #035a6b;
+  box-shadow: 0 0 6px rgba(44, 158, 174, 0.4);
+}
+
+/* Стилизация самого календаря flatpickr */
+:deep(.flatpickr-calendar) {
+  font-family: inherit;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Цвет кружочка выбранной даты */
+:deep(.flatpickr-day.selected),
+:deep(.flatpickr-day.startRange),
+:deep(.flatpickr-day.endRange),
+:deep(.flatpickr-day:hover),
+:deep(.flatpickr-day.today) {
+  background: red;
+  border-color: #035a6b;
+  color: white;
+}
+
+/* Цвет выделенной рамки при наведении */
+:deep(.flatpickr-day:hover) {
+  border-color: #035a6b;
+}
+</style>
+<style>
+/* глобальные стили только для Flatpickr */
+.flatpickr-day.selected,
+.flatpickr-day:hover {
+  background-color: #2C9EAE !important;
+  color: white;
 }
 </style>

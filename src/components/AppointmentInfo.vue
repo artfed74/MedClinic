@@ -2,13 +2,25 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import html2pdf from 'html2pdf.js'; // Импортируем html2pdf
-
+import med from '@/assets/images/med.png';
 const route = useRoute();
 const appointmentDetails = ref(null);
 const appointmentId = route.params.id;
 const token = localStorage.getItem('token');
 const role = localStorage.getItem('role');
 const patientId=localStorage.getItem('patient_id');
+const loadImageAsBase64 = (src) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    fetch(src)
+      .then(res => res.blob())
+      .then(blob => {
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+  });
+};
 const fetchAppointmentDetails = async (id) => {
   const token = localStorage.getItem('token');
 
@@ -49,14 +61,16 @@ const goPresc = async (appointmentId) => {
 };
 
 // Функция для скачивания назначения в формате PDF
-const downloadPrescription = () => {
+const downloadPrescription = async () => {
   const doc = document.createElement('div');
+  const medBase64 = await loadImageAsBase64(med);
 
   // Создаем содержимое PDF из appointmentDetails
   doc.innerHTML = `
+    <img src="${medBase64}" style="width: 120px;height: 80px" />
     <h2>Назначение пациента: ${appointmentDetails.value.patient_full_name}</h2>
     <p><strong>№ Записи:</strong> ${appointmentDetails.value.id}</p>
-    <h4>Медицинские данные</h4>
+    <h4>Медицинские данные пациента</h4>
     <p><strong>Серия паспорта:</strong> ${appointmentDetails.value.medical_data.passport_serial}</p>
     <p><strong>Номер паспорта:</strong> ${appointmentDetails.value.medical_data.passport_number}</p>
     <p><strong>Номер полиса:</strong> ${appointmentDetails.value.medical_data.policy_number}</p>
@@ -64,18 +78,18 @@ const downloadPrescription = () => {
     <p><strong>Группа крови:</strong> ${appointmentDetails.value.medical_data.blood_type}</p>
     <p><strong>Диагноз:</strong> ${appointmentDetails.value.medical_data.diagnosis}</p>
 
-    <h4>Информация о враче</h4>
+    <h4>Информация о приёме</h4>
     <p><strong>Врач:</strong> ${appointmentDetails.value.doctor_full_name}</p>
     <p><strong>Услуга:</strong> ${appointmentDetails.value.service_name}</p>
     <p><strong>Кабинет:</strong> ${appointmentDetails.value.room_name} (номер ${appointmentDetails.value.room_number})</p>
     <p><strong>Время приёма:</strong> ${appointmentDetails.value.appointment_time}</p>
     <p><strong>Статус:</strong> ${appointmentDetails.value.status}</p>
 
-    <h4>Назначение</h4>
+    <h4>Пункт назначений</h4>
     ${appointmentDetails.value.prescriptions.map(p => `
       <div style="margin-bottom: 20px;">
-        <p><strong>Лекарство:</strong> ${p.medication}</p>
-        <p><strong>Комментарий:</strong> ${p.comment}</p>
+        <p><strong>Назначения:</strong> ${p.medication}</p>
+        <p><strong>Комментарии:</strong> ${p.comment}</p>
         <p><strong>Дата назначения:</strong> ${new Date(p.prescription_date).toLocaleString()}</p>
         <p><strong>Врач, выдавший назначение:</strong> ${p.doctor_full_name}</p>
         <p><strong>Подпись:</strong></p>
