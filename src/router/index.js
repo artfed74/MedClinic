@@ -27,6 +27,7 @@ import NotFound from '@/components/NotFound.vue'
 import PatientNotifications from '@/components/PatientNotifications.vue'
 import StatisticIndex from '@/components/StatisticIndex.vue'
 import StatisticsDoctor from '@/components/StatisticsDoctor.vue'
+import StatisticsPatient from '@/components/StatisticsPatient.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -170,6 +171,12 @@ const router = createRouter({
       meta: { hideHeader: true }
     },
     {
+      path: '/statistics/patients',
+      name: 'Statisticspatients',
+      component:StatisticsPatient,
+      meta: { hideHeader: true }
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: NotFound,
@@ -178,6 +185,13 @@ const router = createRouter({
       path: '/testi',
       name: 'TestStar',
       component: TestStar,
+    },
+    {
+      path:'/statistics/patients',
+      name:'Statisticspatients',
+      component:StatisticsPatient,
+      meta: { hideHeader: true }
+
     }
 
 

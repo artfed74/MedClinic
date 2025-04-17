@@ -93,6 +93,13 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+.menu-item1 img{
+    width: 100%;
+    max-width: 150px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
 .menu-item:hover img {
     transform: scale(1.1);
@@ -136,4 +143,31 @@
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
+}
+.top-doctors {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.top-card {
+    background: #f7f9fb;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 300px;
+    transition: transform 0.3s ease;
+}
+.top-card:hover {
+    transform: translateY(-5px);
+}
+.top-card__name {
+    font-weight: 600;
+    font-size: 18px;
+}
+.top-card__stats {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #555;
 }
